@@ -1,0 +1,11 @@
+.env
+node_modules/
+__pycache__/
+*.pyc
+venv/
+.DS_Store
+dist/
+*.log
+apps/agent/.env
+apps/api/.env
+apps/web/.env.local

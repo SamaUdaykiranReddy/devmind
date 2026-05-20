@@ -28,18 +28,14 @@ def extract_fixed_code(fix: str) -> str:
 
 
 async def create_github_pr(state: dict) -> dict:
-    """Create a GitHub PR with the fix applied"""
+    # Use dynamic credentials from state if available
+    github_token = state.get("github_token") or os.getenv("GITHUB_TOKEN")
+    github_owner = state.get("github_owner") or os.getenv("GITHUB_OWNER")
+    github_repo = state.get("github_repo") or os.getenv("GITHUB_REPO")
 
-    github_token = os.getenv("GITHUB_TOKEN")
-    github_owner = os.getenv("GITHUB_OWNER")
-    github_repo = os.getenv("GITHUB_REPO")
-
-    print(f"=== PR CREATOR DEBUG ===")
-    print(f"Token exists: {bool(github_token)}")
-    print(f"Token first 10 chars: {github_token[:10] if github_token else 'NONE'}")
-    print(f"Owner: {github_owner}")
-    print(f"Repo: {github_repo}")
-    print(f"=======================")
+    print(f"=== PR CREATOR ===")
+    print(f"Owner: {github_owner}, Repo: {github_repo}")
+    print(f"=================")
 
     try:
         if not all([github_token, github_owner, github_repo]):

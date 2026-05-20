@@ -9,6 +9,7 @@ import analyzeRouter from "./routes/analyze";
 import errorsRouter from "./routes/errors";
 import authRouter from "./routes/auth";
 import githubRouter from "./routes/github";
+import jiraRouter from './routes/jira';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -29,6 +30,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/analyze", analyzeRouter);
 app.use("/api/errors", errorsRouter);
 app.use("/api/github", githubRouter);
+app.use('/api/jira', jiraRouter);
 
 async function start() {
   await initDB();

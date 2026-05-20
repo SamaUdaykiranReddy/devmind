@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request
 from rag.repo_indexer import index_repo
 from fastapi.responses import JSONResponse
 from agents.orchestrator import run_orchestrator
+from agents.pattern_detector import detect_patterns
 import traceback
 
 app = FastAPI(title="DevMind Agent Service")
@@ -42,4 +43,12 @@ async def index_repository(payload: dict):
         repo_name=repo_name,
         user_id=user_id,
     )
+    return result
+
+
+@app.post("/detect-patterns")
+async def detect_error_patterns(payload: dict):
+    """Detect patterns in recent errors"""
+    errors = payload.get("errors", [])
+    result = await detect_patterns(errors)
     return result

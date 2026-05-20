@@ -62,7 +62,12 @@ export async function initDB() {
     ADD COLUMN IF NOT EXISTS status VARCHAR(50) DEFAULT 'open',
     ADD COLUMN IF NOT EXISTS explanation TEXT,
     ADD COLUMN IF NOT EXISTS github_pr_url VARCHAR(500),
-    ADD COLUMN IF NOT EXISTS bdd_tests TEXT
+    ADD COLUMN IF NOT EXISTS bdd_tests TEXT,
+    ADD COLUMN IF NOT EXISTS jira_issue_key VARCHAR(50),
+    ADD COLUMN IF NOT EXISTS error_hash VARCHAR(64),
+ADD COLUMN IF NOT EXISTS occurrence_count INTEGER DEFAULT 1,
+ADD COLUMN IF NOT EXISTS first_seen TIMESTAMP DEFAULT NOW(),
+ADD COLUMN IF NOT EXISTS last_seen TIMESTAMP DEFAULT NOW()
   `,
     )
     .catch(() => {});

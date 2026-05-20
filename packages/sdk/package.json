@@ -1,0 +1,25 @@
+{
+  "name": "devmind-sdk",
+  "version": "1.0.2",
+  "description": "DevMind SDK — Autonomous AI debugging for Node.js apps",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "keywords": [
+    "devmind",
+    "debugging",
+    "ai",
+    "error-tracking",
+    "autonomous"
+  ],
+  "author": "Udaykiran Reddy Sama",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SamaUdaykiranReddy/devmind"
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "README.md"
+  ]
+}

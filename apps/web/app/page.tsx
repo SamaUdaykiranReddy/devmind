@@ -123,7 +123,7 @@ export default function Dashboard() {
 
       {/* Header */}
       <header
-        className="relative z-10 px-6 py-4 flex items-center justify-between sticky top-0"
+        className="z-10 px-6 py-4 flex items-center justify-between sticky top-0"
         style={{
           borderBottom: "1px solid rgba(0, 255, 255, 0.15)",
           background: "rgba(0, 0, 0, 0.95)",
@@ -181,6 +181,18 @@ export default function Dashboard() {
                   {user.name?.toUpperCase()}
                 </span>
               </div>
+              {user && (
+                <a
+                  href="/settings"
+                  className="text-xs tracking-widest px-3 py-2 transition-all"
+                  style={{
+                    border: "1px solid rgba(0,255,255,0.2)",
+                    color: "rgba(0,255,255,0.6)",
+                  }}
+                >
+                  ⚙️ SETTINGS
+                </a>
+              )}
               <button
                 onClick={handleLogout}
                 className="text-xs tracking-widest px-4 py-2 transition-all"

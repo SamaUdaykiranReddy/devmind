@@ -124,5 +124,46 @@ router.get("/me", async (req: Request, res: Response) => {
     res.status(401).json({ error: "Invalid token" });
   }
 });
+//settings
 
+router.patch("/settings", async (req: Request, res: Response) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) return res.status(401).json({ error: "No token" });
+
+    const decoded = jwt.verify(token, JWT_SECRET) as any;
+    const {
+      jira_domain,
+      jira_email,
+      jira_api_token,
+      jira_project_key,
+      slack_webhook_url,
+      to_email,
+    } = req.body;
+
+    await pool.query(
+      `UPDATE users SET
+        jira_domain = COALESCE($1, jira_domain),
+        jira_email = COALESCE($2, jira_email),
+        jira_api_token = COALESCE($3, jira_api_token),
+        jira_project_key = COALESCE($4, jira_project_key),
+        slack_webhook_url = COALESCE($5, slack_webhook_url),
+        to_email = COALESCE($6, to_email)
+       WHERE id = $7`,
+      [
+        jira_domain,
+        jira_email,
+        jira_api_token,
+        jira_project_key,
+        slack_webhook_url,
+        to_email,
+        decoded.userId,
+      ],
+    );
+
+    res.json({ success: true });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
 export default router;

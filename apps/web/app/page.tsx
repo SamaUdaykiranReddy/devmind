@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import ErrorFeed from "./components/ErrorFeed";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://34.205.172.253:3001";
 
 interface Stats {
   total: number;
@@ -31,17 +31,12 @@ export default function Dashboard() {
   const [showConnectModal, setShowConnectModal] = useState(false);
 
   useEffect(() => {
-    // Load user from localStorage
     const loadUser = () => {
       const stored = localStorage.getItem("devmind_user");
       if (stored) {
         try {
           const parsed = JSON.parse(stored);
-          // Handle both api_key and apiKey field names
-          setUser({
-            ...parsed,
-            api_key: parsed.api_key || parsed.apiKey,
-          });
+          setUser({ ...parsed, api_key: parsed.api_key || parsed.apiKey });
         } catch {}
       }
     };
@@ -130,7 +125,6 @@ export default function Dashboard() {
           backdropFilter: "blur(10px)",
         }}
       >
-        {/* Logo */}
         <div className="flex items-center gap-4">
           <div
             className="w-9 h-9 flex items-center justify-center text-black font-black text-sm"
@@ -151,7 +145,6 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Center — Live indicator */}
         <div className="flex items-center gap-3">
           <div
             className="w-2 h-2 rounded-full animate-pulse"
@@ -171,7 +164,6 @@ export default function Dashboard() {
           </span>
         </div>
 
-        {/* Right — Auth */}
         <div className="flex items-center gap-4">
           {user ? (
             <>
@@ -181,18 +173,24 @@ export default function Dashboard() {
                   {user.name?.toUpperCase()}
                 </span>
               </div>
-              {user && (
-                <a
-                  href="/settings"
-                  className="text-xs tracking-widest px-3 py-2 transition-all"
-                  style={{
-                    border: "1px solid rgba(0,255,255,0.2)",
-                    color: "rgba(0,255,255,0.6)",
-                  }}
-                >
-                  ⚙️ SETTINGS
-                </a>
-              )}
+              <a
+                href="/settings"
+                className="text-xs tracking-widest px-3 py-2 transition-all"
+                style={{
+                  border: "1px solid rgba(0,255,255,0.2)",
+                  color: "rgba(0,255,255,0.6)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = "rgba(0,255,255,0.5)";
+                  e.currentTarget.style.color = "#00ffff";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = "rgba(0,255,255,0.2)";
+                  e.currentTarget.style.color = "rgba(0,255,255,0.6)";
+                }}
+              >
+                ⚙️ SETTINGS
+              </a>
               <button
                 onClick={handleLogout}
                 className="text-xs tracking-widest px-4 py-2 transition-all"
@@ -284,9 +282,8 @@ export default function Dashboard() {
           ))}
         </div>
 
-        {/* Main layout */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Error Feed — 2/3 */}
+          {/* Error Feed */}
           <div className="lg:col-span-2">
             <div
               className="px-4 py-3 mb-4 flex items-center justify-between"
@@ -304,7 +301,7 @@ export default function Dashboard() {
             <ErrorFeed />
           </div>
 
-          {/* Sidebar — 1/3 */}
+          {/* Sidebar */}
           <div className="space-y-4">
             {/* Connect Your App */}
             <div className="p-4" style={panelStyle}>
@@ -325,7 +322,6 @@ export default function Dashboard() {
                 </button>
               </div>
 
-              {/* Code snippet */}
               <div
                 className="text-xs p-3 mb-3 leading-relaxed"
                 style={{
@@ -351,8 +347,7 @@ export default function Dashboard() {
                 </span>
                 <span style={{ color: "#ffffff" }}>)</span>
                 <br />
-                DevMind.
-                <span style={{ color: "#ff6600" }}>init</span>
+                DevMind.<span style={{ color: "#ff6600" }}>init</span>
                 <span style={{ color: "#ffffff" }}>({"{"}</span>
                 <br />
                 &nbsp;&nbsp;service:{" "}
@@ -364,7 +359,6 @@ export default function Dashboard() {
                 <span style={{ color: "#ffffff" }}>{"})"}</span>
               </div>
 
-              {/* API Key display */}
               {user ? (
                 <>
                   <div className="text-xs opacity-50 mb-2 tracking-widest">
@@ -502,7 +496,7 @@ export default function Dashboard() {
 
             {/* GitHub Connect */}
             <a
-              href="http://localhost:3001/api/github/connect"
+              href={`${API_URL}/api/github/connect`}
               className="block p-4 transition-all"
               style={panelStyle}
               onMouseEnter={(e) => {
@@ -530,12 +524,17 @@ export default function Dashboard() {
               </div>
             </a>
 
-            {/* Predict Patterns button */}
+            {/* Predict Patterns */}
             <button
               onClick={async () => {
+                const token = localStorage.getItem("devmind_token");
+                const headers: Record<string, string> = {
+                  "Content-Type": "application/json",
+                };
+                if (token) headers["Authorization"] = `Bearer ${token}`;
                 const res = await fetch(`${API_URL}/api/errors/predict`, {
                   method: "POST",
-                  headers: { "Content-Type": "application/json" },
+                  headers,
                 });
                 const data = await res.json();
                 alert(
@@ -592,7 +591,6 @@ export default function Dashboard() {
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Corner decorations */}
             {[
               "top-0 left-0 border-t-2 border-l-2",
               "top-0 right-0 border-t-2 border-r-2",
@@ -605,7 +603,6 @@ export default function Dashboard() {
                 style={{ borderColor: "#00ffff" }}
               />
             ))}
-
             <div className="flex items-center justify-between mb-4">
               <div
                 className="text-sm tracking-widest font-bold"
@@ -621,7 +618,6 @@ export default function Dashboard() {
                 CLOSE
               </button>
             </div>
-
             <div className="space-y-4 text-xs">
               {[
                 {
@@ -633,7 +629,7 @@ export default function Dashboard() {
                 {
                   step: "02",
                   title: "INITIALIZE",
-                  code: `const DevMind = require('devmind-sdk')\nDevMind.init({\n  service: 'my-app',\n  apiKey: '${user?.api_key || "YOUR_API_KEY"}',\n  apiUrl: 'http://localhost:3001'\n})`,
+                  code: `const DevMind = require('devmind-sdk')\nDevMind.init({\n  service: 'my-app',\n  apiKey: '${user?.api_key || "YOUR_API_KEY"}',\n  apiUrl: '${API_URL}'\n})`,
                   color: "#00ffff",
                 },
                 {
@@ -645,7 +641,7 @@ export default function Dashboard() {
                 {
                   step: "04",
                   title: "TRIGGER TEST ERROR",
-                  code: "curl http://localhost:4000/process",
+                  code: `curl ${API_URL}/api/analyze`,
                   color: "#ff6600",
                 },
               ].map(({ step, title, code, color }) => (
@@ -680,7 +676,6 @@ export default function Dashboard() {
                 </div>
               ))}
             </div>
-
             <div
               className="mt-4 p-3 text-xs"
               style={{

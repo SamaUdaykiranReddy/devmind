@@ -1,9 +1,10 @@
+/* eslint-disable @next/next/no-html-link-for-pages */
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://34.205.172.253:3001";
 
 interface User {
   id: number;
@@ -26,7 +27,6 @@ export default function SettingsPage() {
   const [saved, setSaved] = useState("");
   const [copied, setCopied] = useState(false);
 
-  // Form states
   const [jiraDomain, setJiraDomain] = useState("");
   const [jiraEmail, setJiraEmail] = useState("");
   const [jiraToken, setJiraToken] = useState("");
@@ -41,7 +41,6 @@ export default function SettingsPage() {
       });
       const data = await res.json();
       setUser(data);
-      // Pre-fill form fields
       setJiraDomain(data.jira_domain || "");
       setJiraEmail(data.jira_email || "");
       setJiraProject(data.jira_project_key || "SCRUM");
@@ -50,6 +49,7 @@ export default function SettingsPage() {
       console.error("Failed to fetch user:", err);
     }
   };
+
   useEffect(() => {
     const init = async () => {
       const storedToken = localStorage.getItem("devmind_token");
@@ -92,7 +92,6 @@ export default function SettingsPage() {
       if (result.success) {
         setSaved(section);
         setTimeout(() => setSaved(""), 3000);
-        // Update localStorage
         if (user) {
           const updated = { ...user, ...data };
           localStorage.setItem("devmind_user", JSON.stringify(updated));
@@ -160,7 +159,6 @@ export default function SettingsPage() {
       className="min-h-screen"
       style={{ background: "#000", color: "#00ffff", fontFamily: "monospace" }}
     >
-      {/* Grid background */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div
           className="absolute inset-0 opacity-[0.04]"
@@ -172,7 +170,6 @@ export default function SettingsPage() {
         />
       </div>
 
-      {/* Header */}
       <header
         className="z-10 px-6 py-4 flex items-center justify-between sticky top-0"
         style={{
@@ -197,7 +194,6 @@ export default function SettingsPage() {
           </Link>
           <span className="text-xs opacity-40">/ SETTINGS</span>
         </div>
-
         <div className="flex items-center gap-4">
           <span className="text-xs opacity-60">
             OPERATOR:{" "}
@@ -217,7 +213,6 @@ export default function SettingsPage() {
       </header>
 
       <div className="relative z-10 px-6 py-6 max-w-3xl mx-auto space-y-6">
-        {/* Page title */}
         <div>
           <h1
             className="text-2xl font-black tracking-widest mb-1"
@@ -232,7 +227,7 @@ export default function SettingsPage() {
 
         {/* Profile */}
         <div className="p-5" style={panelStyle}>
-          <div className="text-xs tracking-widest mb-4 opacity-70 flex items-center gap-2">
+          <div className="text-xs tracking-widest mb-4 opacity-70">
             👤 PROFILE
           </div>
           <div className="grid grid-cols-2 gap-4">

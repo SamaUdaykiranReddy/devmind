@@ -2,6 +2,8 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://34.205.172.253:3001";
+
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -14,13 +16,14 @@ export default function LoginPage() {
     const timer = setTimeout(() => setMounted(true), 10);
     return () => clearTimeout(timer);
   }, []);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
     try {
-      const res = await fetch("http://localhost:3001/api/auth/login", {
+      const res = await fetch(`${API_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -43,7 +46,6 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center overflow-hidden relative">
-      {/* Animated grid background */}
       <div className="absolute inset-0 overflow-hidden">
         <div
           className="absolute inset-0 opacity-10"
@@ -53,7 +55,6 @@ export default function LoginPage() {
             backgroundSize: "50px 50px",
           }}
         />
-        {/* Glowing orbs */}
         <div
           className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full opacity-5"
           style={{
@@ -68,7 +69,6 @@ export default function LoginPage() {
         />
       </div>
 
-      {/* Scanline effect */}
       <div
         className="absolute inset-0 pointer-events-none opacity-[0.03]"
         style={{
@@ -77,11 +77,8 @@ export default function LoginPage() {
         }}
       />
 
-      {/* Main card */}
       <div
-        className={`relative z-10 w-full max-w-md px-8 py-10 transition-all duration-700 ${
-          mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-        }`}
+        className={`relative z-10 w-full max-w-md px-8 py-10 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
         style={{
           background: "rgba(0, 0, 0, 0.8)",
           border: "1px solid rgba(0, 255, 255, 0.3)",
@@ -89,7 +86,6 @@ export default function LoginPage() {
             "0 0 30px rgba(0, 255, 255, 0.1), inset 0 0 30px rgba(0, 0, 0, 0.5)",
         }}
       >
-        {/* Corner decorations */}
         <div
           className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2"
           style={{ borderColor: "#00ffff" }}
@@ -107,7 +103,6 @@ export default function LoginPage() {
           style={{ borderColor: "#00ffff" }}
         />
 
-        {/* Logo */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-2">
             <div
@@ -135,7 +130,6 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {/* Status bar */}
         <div
           className="flex items-center gap-2 mb-6 px-3 py-2 text-xs"
           style={{
@@ -152,7 +146,6 @@ export default function LoginPage() {
           SYSTEM ONLINE — AUTHENTICATE TO CONTINUE
         </div>
 
-        {/* Form */}
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
             <label
@@ -250,14 +243,11 @@ export default function LoginPage() {
               if (!loading) {
                 (e.target as HTMLButtonElement).style.background =
                   "rgba(0, 255, 255, 0.8)";
-                (e.target as HTMLButtonElement).style.boxShadow =
-                  "0 0 20px rgba(0, 255, 255, 0.4)";
               }
             }}
             onMouseLeave={(e) => {
               if (!loading) {
                 (e.target as HTMLButtonElement).style.background = "#00ffff";
-                (e.target as HTMLButtonElement).style.boxShadow = "none";
               }
             }}
           >
@@ -265,7 +255,6 @@ export default function LoginPage() {
           </button>
         </form>
 
-        {/* Divider */}
         <div className="flex items-center gap-3 my-5">
           <div
             className="flex-1 h-px"
@@ -283,10 +272,9 @@ export default function LoginPage() {
           />
         </div>
 
-        {/* GitHub OAuth */}
         <button
           onClick={() =>
-            (window.location.href = "http://localhost:3001/api/github/connect")
+            (window.location.href = `${API_URL}/api/github/connect`)
           }
           className="w-full py-3 text-sm font-bold tracking-widest uppercase transition-all flex items-center justify-center gap-3"
           style={{
@@ -310,7 +298,6 @@ export default function LoginPage() {
           CONNECT WITH GITHUB
         </button>
 
-        {/* Register link */}
         <p
           className="text-center mt-5 text-xs"
           style={{ color: "rgba(0, 255, 255, 0.4)", fontFamily: "monospace" }}

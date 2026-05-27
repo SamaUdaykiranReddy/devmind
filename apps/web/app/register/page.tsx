@@ -2,6 +2,8 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://34.205.172.253:3001";
+
 export default function RegisterPage() {
   const router = useRouter();
   const [name, setName] = useState("");
@@ -22,7 +24,7 @@ export default function RegisterPage() {
     setError("");
 
     try {
-      const res = await fetch("http://localhost:3001/api/auth/register", {
+      const res = await fetch(`${API_URL}/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
@@ -52,7 +54,6 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center overflow-hidden relative">
-      {/* Grid background */}
       <div className="absolute inset-0 overflow-hidden">
         <div
           className="absolute inset-0 opacity-10"
@@ -76,7 +77,6 @@ export default function RegisterPage() {
         />
       </div>
 
-      {/* Scanlines */}
       <div
         className="absolute inset-0 pointer-events-none opacity-[0.03]"
         style={{
@@ -85,11 +85,8 @@ export default function RegisterPage() {
         }}
       />
 
-      {/* Main card */}
       <div
-        className={`relative z-10 w-full max-w-md px-8 py-10 transition-all duration-700 ${
-          mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-        }`}
+        className={`relative z-10 w-full max-w-md px-8 py-10 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
         style={{
           background: "rgba(0, 0, 0, 0.8)",
           border: "1px solid rgba(0, 255, 255, 0.3)",
@@ -97,7 +94,6 @@ export default function RegisterPage() {
             "0 0 30px rgba(0, 255, 255, 0.1), inset 0 0 30px rgba(0, 0, 0, 0.5)",
         }}
       >
-        {/* Corner decorations */}
         {[
           "top-0 left-0 border-t-2 border-l-2",
           "top-0 right-0 border-t-2 border-r-2",
@@ -111,7 +107,6 @@ export default function RegisterPage() {
           />
         ))}
 
-        {/* Logo */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-2">
             <div
@@ -139,7 +134,6 @@ export default function RegisterPage() {
           </p>
         </div>
 
-        {/* Status bar */}
         <div
           className="flex items-center gap-2 mb-6 px-3 py-2 text-xs"
           style={{
@@ -156,7 +150,6 @@ export default function RegisterPage() {
           NEW OPERATOR REGISTRATION — FILL ALL FIELDS
         </div>
 
-        {/* Form */}
         <form onSubmit={handleRegister} className="space-y-4">
           {[
             {
@@ -253,7 +246,6 @@ export default function RegisterPage() {
           </button>
         </form>
 
-        {/* Login link */}
         <p
           className="text-center mt-5 text-xs"
           style={{ color: "rgba(0, 255, 255, 0.4)", fontFamily: "monospace" }}

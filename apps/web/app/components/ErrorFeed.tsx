@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import ErrorCard from "./ErrorCard";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://34.205.172.253:3001";
 
 export default function ErrorFeed() {
   const [errors, setErrors] = useState<any[]>([]);
@@ -11,7 +11,6 @@ export default function ErrorFeed() {
   const [filter, setFilter] = useState<"all" | "open" | "resolved">("all");
   const [search, setSearch] = useState("");
 
-  // Single fetch function used everywhere — always sends auth token
   const fetchErrors = async () => {
     try {
       const token = localStorage.getItem("devmind_token");
@@ -55,7 +54,6 @@ export default function ErrorFeed() {
         : filter === "open"
           ? e.status !== "resolved"
           : e.status === "resolved";
-
     const matchesSearch =
       search === ""
         ? true
@@ -64,7 +62,6 @@ export default function ErrorFeed() {
           e.route?.toLowerCase().includes(search.toLowerCase()) ||
           e.root_cause?.toLowerCase().includes(search.toLowerCase()) ||
           e.anomaly_type?.toLowerCase().includes(search.toLowerCase());
-
     return matchesFilter && matchesSearch;
   });
 
@@ -81,7 +78,6 @@ export default function ErrorFeed() {
 
   return (
     <div>
-      {/* Search Box */}
       <input
         type="text"
         placeholder="🔍 Search errors... (e.g. 'null errors', 'database', 'high')"
@@ -102,7 +98,6 @@ export default function ErrorFeed() {
         }}
       />
 
-      {/* Filter buttons */}
       <div className="flex gap-2 mb-4 flex-wrap">
         {(["all", "open", "resolved"] as const).map((f) => (
           <button
@@ -129,7 +124,6 @@ export default function ErrorFeed() {
             )
           </button>
         ))}
-
         {search && (
           <span
             className="ml-auto text-xs self-center"

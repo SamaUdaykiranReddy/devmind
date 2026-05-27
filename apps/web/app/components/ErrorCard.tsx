@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://34.205.172.253:3001";
+
 interface Analysis {
   id: number;
   service: string;
@@ -93,7 +95,7 @@ export default function ErrorCard({
   const isCritical = analysis.severity === "critical" && !isResolved;
 
   const updateStatus = async (newStatus: string) => {
-    await fetch(`http://localhost:3001/api/analyze/${analysis.id}/status`, {
+    await fetch(`${API_URL}/api/analyze/${analysis.id}/status`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status: newStatus }),
@@ -116,7 +118,6 @@ export default function ErrorCard({
         animation: isCritical ? "critical-pulse 2.5s infinite" : "none",
       }}
     >
-      {/* Top gradient accent line */}
       <div
         style={{
           height: "2px",
@@ -125,8 +126,6 @@ export default function ErrorCard({
             : `linear-gradient(90deg, transparent, ${sev.color} 50%, transparent)`,
         }}
       />
-
-      {/* Left severity glow bar */}
       <div
         className="absolute left-0 top-0 bottom-0 w-1"
         style={{
@@ -138,10 +137,8 @@ export default function ErrorCard({
       />
 
       <div className="pl-5 pr-4 pt-3 pb-4">
-        {/* HEADER */}
         <div className="flex items-start justify-between gap-3 mb-3">
           <div className="flex-1 min-w-0">
-            {/* Badge row */}
             <div className="flex items-center gap-2 flex-wrap mb-2">
               <span
                 className="text-xs font-black tracking-widest px-2 py-0.5"
@@ -211,7 +208,6 @@ export default function ErrorCard({
               </span>
             </div>
 
-            {/* Error text */}
             <div
               className="text-sm font-bold mb-2 leading-snug"
               style={{
@@ -225,7 +221,6 @@ export default function ErrorCard({
               ⚠ {analysis.error_text}
             </div>
 
-            {/* File location */}
             {analysis.error_file && (
               <div
                 className="inline-flex items-center gap-2 text-xs px-2 py-1 mb-2"
@@ -246,7 +241,6 @@ export default function ErrorCard({
               </div>
             )}
 
-            {/* Action links */}
             <div className="flex items-center gap-2 flex-wrap">
               {analysis.github_pr_url && (
                 <a
@@ -297,7 +291,6 @@ export default function ErrorCard({
             </div>
           </div>
 
-          {/* Right — time + actions */}
           <div className="flex flex-col items-end gap-2 shrink-0">
             <span
               className="text-xs"
@@ -369,7 +362,6 @@ export default function ErrorCard({
           </div>
         </div>
 
-        {/* TABS */}
         <div
           className="flex overflow-x-auto"
           style={{ borderBottom: "1px solid rgba(0,255,255,0.12)" }}
@@ -396,7 +388,6 @@ export default function ErrorCard({
           ))}
         </div>
 
-        {/* TAB CONTENT */}
         <div
           className="p-3 text-xs leading-relaxed"
           style={{

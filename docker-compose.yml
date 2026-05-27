@@ -2,7 +2,7 @@ services:
   redis:
     image: redis:7-alpine
     ports:
-      - "6380:6379"
+      - "6379:6379"
 
   postgres:
     image: postgres:15-alpine
@@ -11,7 +11,7 @@ services:
       POSTGRES_PASSWORD: devmind
       POSTGRES_DB: devmind
     ports:
-      - "5433:5432"
+      - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
 
@@ -19,11 +19,9 @@ services:
     build: ./apps/agent
     ports:
       - "8000:8000"
+    env_file:
+      - ./apps/agent/.env
     environment:
-      - GROQ_API_KEY=${GROQ_API_KEY}
-      - PINECONE_API_KEY=${PINECONE_API_KEY}
-      - PINECONE_HOST=${PINECONE_HOST}
-      - PINECONE_INDEX=${PINECONE_INDEX}
       - REDIS_URL=redis://redis:6379
       - DATABASE_URL=postgresql://devmind:devmind@postgres:5432/devmind
     depends_on:
@@ -34,10 +32,13 @@ services:
     build: ./apps/api
     ports:
       - "3001:3001"
+    env_file:
+      - ./apps/api/.env
     environment:
       - DATABASE_URL=postgresql://devmind:devmind@postgres:5432/devmind
       - AGENT_URL=http://agent:8000
       - PORT=3001
+      - FRONTEND_URL=http://34.205.172.253:3002
     depends_on:
       - postgres
       - agent
@@ -45,18 +46,9 @@ services:
   web:
     build: ./apps/web
     ports:
-      - "3000:3000"
+      - "3002:3000"
     environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:3001
-    depends_on:
-      - api
-
-  sample-app:
-    build: ./apps/sample-app
-    ports:
-      - "4000:4000"
-    environment:
-      - DEVMIND_API_URL=http://api:3001
+      - NEXT_PUBLIC_API_URL=http://34.205.172.253:3001
     depends_on:
       - api
 

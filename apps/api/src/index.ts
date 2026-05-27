@@ -9,7 +9,7 @@ import analyzeRouter from "./routes/analyze";
 import errorsRouter from "./routes/errors";
 import authRouter from "./routes/auth";
 import githubRouter from "./routes/github";
-import jiraRouter from './routes/jira';
+import jiraRouter from "./routes/jira";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -18,7 +18,12 @@ app.use((req, res, next) => {
   console.log(`${req.method} ${req.path}`);
   next();
 });
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+    credentials: false,
+  }),
+);
 app.use(express.json());
 
 // Routes
@@ -30,7 +35,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/analyze", analyzeRouter);
 app.use("/api/errors", errorsRouter);
 app.use("/api/github", githubRouter);
-app.use('/api/jira', jiraRouter);
+app.use("/api/jira", jiraRouter);
 
 async function start() {
   await initDB();

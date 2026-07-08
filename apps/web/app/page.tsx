@@ -2,7 +2,9 @@
 import { useEffect, useState } from "react";
 import ErrorFeed from "./components/ErrorFeed";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://34.205.172.253:3001";
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://devmind-production-f6bb.up.railway.app";
 
 interface Stats {
   total: number;
@@ -25,7 +27,7 @@ interface User {
 
 export default function Dashboard() {
   const [stats, setStats] = useState<Stats | null>(null);
-  const [time, setTime] = useState(new Date());
+  const [time, setTime] = useState<Date | null>(null);
   const [copied, setCopied] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [showConnectModal, setShowConnectModal] = useState(false);
@@ -41,6 +43,7 @@ export default function Dashboard() {
       }
     };
     loadUser();
+    setTime(new Date());
 
     const fetchStats = async () => {
       try {
@@ -160,7 +163,7 @@ export default function Dashboard() {
               color: "rgba(0, 255, 255, 0.5)",
             }}
           >
-            {time.toLocaleTimeString()}
+            {time ? time.toLocaleTimeString() : "--:--:--"}
           </span>
         </div>
 

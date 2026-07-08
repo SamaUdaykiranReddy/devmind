@@ -43,6 +43,7 @@ export default function Dashboard() {
       }
     };
     loadUser();
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setTime(new Date());
 
     const fetchStats = async () => {
